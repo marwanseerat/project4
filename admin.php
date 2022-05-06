@@ -6,7 +6,7 @@ $fname=$_SESSION['fname'];
 $faname=$_SESSION['lname'];
 $email=$_SESSION['email'];
 $pass=$_SESSION['pass'];
-$datecCreated= $_SESSION['date_create']
+$datecCreated= $_SESSION['date_creat'];
 
 ?>
 

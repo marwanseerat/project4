@@ -1,4 +1,4 @@
- div{
+ /* div{
      margin-bottom: 73px;
     position: absolute;
     top: 18%;
@@ -24,42 +24,77 @@ h1 ,h4{
 body {
     background: #35858B;
   
-  }
+  } */
 
-  #btn{
-    left: 30%;
-    top: 100%;
+    #btn{
+      position: absolute;
+      left: 36%;
+      top: 82%;
   }
-  
- button{
+   
+  button{
    margin-bottom: 10px;
-   width: 100%;
+   width: 200px;
    border: none;
    border-radius: 7%;
    padding: 10px;
    font-size: 20px;
    background-color: #072227;
+   margin-left: 15px;
+   
+
   
- } 
+ }  
   
  
   a{
     text-decoration: none;
     color: white;
+  } 
+  
+  @import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;900&display=swap');
+
+  body {
+    background: #35858B;
   }
   
-  @media  (min-width:425px) and (max-width: 658px){
-    div{
-      margin-bottom: 73px;
-     position: absolute;
-     top: 18%;
-     left: 28%;
-     width: 30%;
-     height: 53%;
-     
-     
- }
+  .container  {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    height: 400px;
+    width: 600px;
+    background-image: url("./project.png");
+    background-size: contain;
+    background-position: 50%;
+    
+    overflow: hidden;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 0 20px 8px #d0d0d0;
   }
+  
+  .content {
+    position: absolute;
+    top: 50%;
+    transform: translatey(-50%);
+    text-align: justify;
+    color: black;
+    padding: 40px;
+    font-family: 'Merriweather', serif;
+  }
+  
+  h1 {
+    font-weight: 900;
+    text-align: center;
+  }
+  
+  h3 {
+    font-weight: 300;
+  }
+  
+  
   
  
 
