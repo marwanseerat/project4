@@ -1,190 +1,182 @@
-<?php
-session_start();
-
-$name_regex="/^([a-zA-Z' ]+)$/";
-$rexemail = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/';
-$rexpass = '/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/';
-$rexphone = '/^[0-9]{3}-[0-9]{4}-[0-9]{4}$/';
-$_SESSION['date_creat']=date("Y-m-d");
+<?php 
+  session_start();
+  $_SESSION["usersData"];
+  if(empty($_SESSION["usersData"])){
+   $_SESSION["usersData"]= [];
+  }
 
 
-if(isset($_POST["btn"])){
-	//validation for the firstname
-	$fname= $_POST["fname"];
-	$_SESSION["fname"] =$fname;
-	if(empty($_SESSION["fname"])){
-		$fname_ch ="<span style=' color:red; font-family:Chaparral Pro Light;'> Please Enter Your Name !! </span>";
-	}else{
-		if(preg_match($name_regex,$_SESSION["fname"])){
-			$fname_ch ="<span style=' color:green; font-family:Chaparral Pro Light;'> Correct Name </span>";
-			$fname_done = true;
-		}else{
-			"<span style=' color:red; font-family:Chaparral Pro Light;'>  Incorrect Name!! </span>";
-		}
-	}
-
-	//validation for the middlename
-	$medname=$_POST["medname"];
-$_SESSION["medname"] = $medname;
-
-if(empty($_SESSION["medname"])){
-	$medname_ch ="<span style=' color:red; font-family:Chaparral Pro Light;'> Please Enter Your Name !! </span>";
-}else{
-	if(preg_match($name_regex,$_SESSION["medname"])){
-		$medname_ch ="<span style=' color:green; font-family:Chaparral Pro Light;'> Correct Name </span>";
-		$medname_done = true;
-	}else{
-		"<span style=' color:red; font-family:Chaparral Pro Light;'>  Incorrect Name!! </span>";
-	}
-}
-
-
-
-//validation for the lname
-$lname=$_POST["lname"];
-$_SESSION["lname"] =$lname; 
-
-
-if(empty($_SESSION["lname"])){
-	$lname_ch ="<span style=' color:red; font-family:Chaparral Pro Light;'> Please Enter Your Name !! </span>";
-}else{
-	if(preg_match($name_regex,$_SESSION["lname"])){
-		$lname_ch  ="<span style=' color:green; font-family:Chaparral Pro Light;'> Correct Name </span>";
-		$lname_done  = true;
-	}else{
-		"<span style=' color:red; font-family:Chaparral Pro Light;'>  Incorrect Name!! </span>";
-	}
-}
-
-
-//validation for the dateofbirth
  
-$_SESSION["dateofbirth"] =$_POST["dateofbirth"];
-if((floor((time() - strtotime($_SESSION['dateofbirth'])) / 31556926)) <16){
-	$dob_ch="<span style='color:red ;> You Are Too Young To Register ! </span>";
-}else{
-	$dob_ch="<span style='color:green ;> Your age is Legal to Register </span>";
-	$dob_done=true;
+ if(isset($_POST['btn'])){
+ 
+
+
+    
+
+ /////////////////////////////////////////////////////
+    
+
+
+$fname= $_POST['firstname'];
+$mname= $_POST['middlename'];
+$lname= $_POST['lastname'];
+$email= $_POST['email'];
+$phone= $_POST['phonenumber'];
+$pass= $_POST['password'];
+$cpass= $_POST['cpassword'];
+$date= $_POST['dateofbirth'];
+
+
+ 
+
+ ////////////////////////////////////////////////////////
+ if (preg_match('/[A-Za-z][A-Za-z]/', $fname)) {
+
+    $fnameERR="";
+    $fname_correct=true;
+       
+} else {
+    $fnameERR="Required only characters";
+    $fname_correct=false;
+}
+  /////////////////////////////////////////////////
+  if (preg_match('/[A-Za-z][A-Za-z]/', $mname)) {
+
+    $mnameERR=" ";
+    $mname_correct=true;
+       
+} else {
+    $mnameERR="Required only characters";
+    $mname_correct=false;
 }
 
-//validation for the phone
-$phone=$_POST["phone"];
-$_SESSION["phone"] = $phone;
-if(empty($_SESSION["phone"])){
-	$number_ch="<span style=' color:red;> Please Enter Your phone number !! </span>";
-	}else{ 
-		if(preg_match($rexphone,$_SESSION["phone"])){
-			$number_ch="<span style='color:green ;'> Correct Phone Number </span>";
-		$number_done=true;
-		}else{
-			$number_ch="<span style=' color:red ;'> Incorrect Phone Number</span>";
-	}}
+//////////////////////////////////////////////////
+if (preg_match('/[A-Za-z][A-Za-z]/', $lname)) {
 
-//validation for the email
-$email= $_POST["email"];
-$_SESSION["email"] =$email;
-if(empty($_SESSION["email"])){
-	$email_ch="<span style=' color:red;'> Please Enter Your Email !! </span>";
-	}else{ 
-		if(preg_match($rexemail,$_SESSION["email"])){
-		$email_ch="<span style='color:green ;'> Correct Email </span>";
-		$email_done=true;
-		}else{
-		$email_ch="<span style=' color:red ;'> Incorrect Email</span>";
-	}}
-
-
-//validation for the password
-$pass= $_POST["pass"];
-$_SESSION["pass"] =$pass;
-if(empty($_SESSION["pass"])){
-	$Pass_Check="<span style=' color:red; font-family:Chaparral Pro Light;'> Please Enter Your Password ! </span>";}
-else{
-	$uppercase = preg_match('@[A-Z]@', $_SESSION["pass"]);
-	$lowercase = preg_match('@[a-z]@', $_SESSION["pass"]);
-	$number    = preg_match('@[0-9]@', $_SESSION["pass"]);
-	$specialChars = preg_match('@[^\w]@', $_SESSION["pass"]);
-	if($uppercase || !$lowercase || !$number || !$specialChars || strlen($pass) < 8) {
-		$Pass_Check= "<span style='color:green ;'> Your Password Is Strong .</span>";
-		$Pass_done=true;
-	}else{
-		$Pass_Check="<span style='color:red ;'> Password should be at least 8 characters in length and should include at least one upper case letter, one number, and one special character.</span>";
-	}}
-
-//validation for the confirm password
-$conpass=$_POST["conpass"];
-$_SESSION["conpass"] =$conpass;
-
-if(empty($_SESSION["conpass"])){
-	$conpass_Check="<span style=' color:red; '> Please Enter The Same Password ! </span>";}
-else{
-	if($_SESSION["pass"] == $_SESSION["conpass"]){
-		$conpass_Check="<span style='color:green ;'> Password Match </span>";
-		$conpass_done=true;
-		}else{
-		$conpass_Check="<span style=' color:red ;'> Your Password Dosen't Match ! </span>";
-	}}
-
+        $lastName_result="";
+        $lastName_correct=true;
+       
+} else {
+    $lastName_result="Required only characters";
+    $lastName_correct=false;
 }
+
+//////////////////////////////////////////////////
+
+
+
+
+
+if (preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$/', $email)) {
+    
+    $email_result="";
+    $email_correct=true;  
+
+} else { 
+
+ $email_result="Invalid email";
+ $email_correct=false;
+
+}   
+/////////////////////////////////////////////////////
+
+if(preg_match("/^\\(?([0-9]{3})\\)?[-.\\s]?([0-9]{3})[-.\\s]?([0-9]{4})?[-.\\s]?([0-9]{4})$/",$phone)){
+    $phoneNumber_result="";
+    $confirmPhone_correct=true;
+}
+else{
+    $phoneNumber_result=" Should be 14 digits ";
+    $confirmPhone_correct=false;
+}
+
+///////////////////////////////////////////////////////
+
+$num='/[\d]{2,}/';
+$capital='/[A-Z]/';
+$symboles='/[#$@!%&*?]/';
+
+if (preg_match("/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/", $pass)) {
+    
+    $password_result="";
+    $password_correct=true;
+
+   }
+    elseif(!preg_match($num, $pass)) { 
+ 
+    $password_result="Your password must contain 2 numbers at least";
+    $paswword_correct=false;
+
+   } 
+   elseif(!preg_match($capital, $pass)) {
+      
+
+       $password_result="Incorrect! password must be capital!";
+       $paswword_correct=false;
+   }
+   else if (!preg_match($symboles, $pass)){
+      
+       
+       $password_result="You password must contain at least 1 symbole";
+       $paswword_correct=false;
+   }
+
+  ////////////////////////////////////////////////////////////////////
+ 
+    if ($cpass == $pass){
+        $password_match=true;
+        $confirmPassword_correct=true;
+        $confirmPassword_result="";
+    }
+    else{
+        $password_match=false;
+        $confirmPassword_result="Passwords don't match";
+        $confirmPassword_correct=false;
+    }
+    
+///////////////////////////////////////////////////////////////////
+
+if((floor((time() - strtotime( $date)) / 31556926)) >16){
+    $dob_result="";
+    $confirmDob_correct=true;
+}
+
+else{
+    $dob_result="You are younger than 16 years old";
+    $confirmDob_correct=false;
+}
+////////////////////////////////////////////////////
 
 if(
-	$fname_done && $medname_done && $lname_done &&  $email_done && $conpass_Check && $dob_done
+    $fname_correct && $mname_correct && $lastName_correct  && $email_correct && $confirmPassword_correct && $confirmPhone_correct && $confirmDob_correct
 ){
-	$_SESSION['array']=array(
-		'First Name'=> $_SESSION['fname'],
-		'Middle Name'=> $_SESSION['medname'],
-		'Last Name'=>$_SESSION['lname'],
-		'Email'=> $_SESSION['email'],
-		'Password'=> $_SESSION['pass'],
-		'Password Confirmation'=> $_SESSION['conpass'],
-		'Phone Number'=> $_SESSION['phone'],
-		'Date Of Birth'=>$_SESSION['dateofbirth']
-	);
-	header('location:login.php');
+    // $_SESSION['firstname']= $_POST['firstname'];
+    // $_SESSION['middlename']= $_POST['middlename'];
+    // $_SESSION['lastname']= $_POST['lastname'];
+    // $_SESSION['familyname']= $_POST['familyname'];
+    // $_SESSION['email']= $_POST['email'];
+    // $_SESSION['phonenumber']= $_POST['phonenumber'];
+    // $_SESSION['password']= $_POST['password'];
+    // $_SESSION['cpassword']= $_POST['cpassword'];
+    // $_SESSION['dateofbirth']= $_POST['dateofbirth'];
+    // $_SESSION['date_create']=date("m/d/y H:ia");
+       $dateCreate=date("m/d/y H:ia");
+
+    $arr=['firstname'=> $fname, 'middlename'=> $mname, 'lastname'=> $lname, 'familyname'=>$faname, 'email'=>$email, 'phonenumber'=> $phone,'password'=>$pass, 'cpassword'=>$cpass,'dateofbirth'=>$date, 'date_create'=> $dateCreate, "Last-Login-Date" =>"haven't login yet"];
+    array_push($_SESSION["usersData"],$arr);
+    
+    
+
+    header('location:login.php');
+
+    ////////////////////////////////////////////
+  
+  
 }
-else {
-	echo 'please check your information';
-}
+ }
+ 
 
-
-
-
-
-
-
-
-
-
-
-?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+ 
+ ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -192,8 +184,10 @@ else {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./sign-up.css">
-    <title>Document</title>
+    <title>Sign up</title>
+	<style>
+  <?php include "sign-up.css" ?>
+</style>
 </head>
 <body>
 <div class="signup-box">
@@ -201,41 +195,42 @@ else {
 	<h4> Create an account, It's free </h4>
 	<form action="sign-up.php" method="post">
 		<label >First Name</label>
-		<input type="text" name="fname" required>
-		<br>
-		<?php if(isset($fname_ch)){echo $fname_ch;}?>
-
+		<input type="text" name="firstname" required>
+		<span id="s1"> <?php if(isset( $fnameERR)){echo  $fnameERR;}?></span>
+		
+		
 		<!-- //////////////////////// -->
 
 		<label >Middle Name</label>
-		<input type="text" name="medname" required>
-		<br>
-		<?php if(isset($medname_ch)){echo $medname_ch;}?>
-
+		<input type="text" name="middlename" required>
+		<span id="s2"><?php if(isset($mnameERR)){echo $mnameERR;}?></span>
+		
+		
 		<!-- //////////////////////// -->
 
 		<label >Last Name</label>
-		<input type="text" name="lname" required>
-		<br>
-		<?php if(isset($lname_ch)){echo $lname_ch;}?>
-
+		<input type="text" name="lastname" required>
+		<span id="s3"> <?php if(isset($lastName_result)){echo $lastName_result;}?></span>
+	
+		
 		<!-- //////////////////////// -->
 
 
 		<label for="DateofBirth">Date of Birth</label> <br>
         <input type="date" name="dateofbirth"  required>
+		<span id="s9" > <?php if(isset($dob_result)){echo $dob_result;}?></span>
 
-		<br>
-		<?php if(isset($dob_ch)){echo $dob_ch;}?>
-
+	
+		
 		<!-- //////////////////////// -->
 
 
 		<label >Phone Number</label>
-		<input type="tel" name="phone" required>
+		<input type="tel" name="phonenumber" required>
+		<span id="s6"> <?php if(isset($phoneNumber_result)){echo $phoneNumber_result;}?></span>
 
-		<br>
-		<?php if(isset($number_ch)){echo $number_ch;}?>
+		
+		
 
 
 
@@ -244,31 +239,34 @@ else {
 
 		<label >Email</label>
 		<input type="email" name="email" required>
-		<br>
-		<?php if(isset($email_ch)){echo $email_ch;}?>
+		<span id="s5"><?php if(isset($email_result)){echo $email_result;}?></span>
+	
+		
 
 	<!-- //////////////////////// -->
 
 		<label >Password</label>
-		<input type="password" name="pass" required>
-		<br>
-		<?php if(isset($Pass_Check)){echo $Pass_Check;}?>
+		<input type="password" name="password" required>
+		<span id="s7"> <?php if(isset($password_result)){echo $password_result;}?></span>
+		
+		
 			<!-- //////////////////////// -->
 
 		<label >Confirm Password</label>
-		<input type="password" name="conpass" required>
+		<input type="password" name="cpassword" required>
+		<span id="s8"> <?php if(isset($confirmPassword_result)){echo $confirmPassword_result;}?></span>
 
-		<br>
-		<?php if(isset($conpass_Check)){echo $conpass_Check;}?>
+		
+		
 
 			<!-- //////////////////////// -->
 
 
 		<!-- <input type="submit" name="btn" value="sign up"> -->
-		<button class="btn" type="submit" name="btn" style="width: 57%;height: 5%;margin-top: 32px;background: #072227;color: white; border: none; margin-left: 22%;">sign up</button>
+		<button class="btn" type="submit" name="btn" style="width: 57%;height: 5%;margin-top: 32px;background: #072227;color: white; border: none; margin-left: 22%; padding: 5px;">sign up</button>
 
 	</form>
-	<p > Already have an account <a href="login.html"> Login here</a></p>
+	<p style="color:black;"> Already have an account <a href="login.html"> Login here</a></p>
 </div>
 
 

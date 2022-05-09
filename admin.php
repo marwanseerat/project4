@@ -1,70 +1,71 @@
 <?php
 session_start();
-
-setCookie('array', date("m/d/y H:ia "), 60*24*60*60+time());
-$fname=$_SESSION['fname'];
-$faname=$_SESSION['lname'];
-$email=$_SESSION['email'];
-$pass=$_SESSION['pass'];
-$datecCreated= $_SESSION['date_creat'];
+setCookie('FirstName', date("H:i:s-m/d/y"), 60*24*60*60+time());
 
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>USER PAGE</title>
-    <link rel="stylesheet" href="sign-up.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css"integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>Welcome Page </title>
     <style>
-        table, th, td {
-  border: 1px solid black;
-  font-size:20px;
-  width:34%;
-    height:20%;
-    color:white;
-    padding:5px;
+        h1{
+            margin-top:5%;
+            text-align:center
 
+        }
+        h3{
+            margin-top:3%;
+            margin-bottom:3%;
+            text-align:center
+        }
 
-}
-/* table{
-    width:34%;
-    height:20%;
-    
-    
-} */
+        table{
+            border: 2px solid black;
+        }
     </style>
 </head>
 <body>
-<h1> Welcome <?php echo $_SESSION['fname']?> To Our Home Page ! <h1>
-        
-
-        
-<table>
-
-    <tr>
-      <th >ID</th>
-      <th >Name</th>
-      <th >Email</th>
-      <th >Password</th>
-      <th>Date Created</th>
-      <th >date last login</th>
-
-    </tr>
-  
-
-    <tr>
-      <td></td>
-      <td><?php echo $_SESSION['fname'] ;?></td>
-      <td><?php echo $_SESSION['email'] ;?></td>
-      <td><?php echo $_SESSION['pass'] ;?></td>
-      <td><?php echo $datecCreated ?></td>
-      <td><?php echo $_COOKIE['FirstName'];?></td>
-    </tr>
-   
  
+    <h1 > Welcome Admin ! <h1>
+        <h3 > Your Can See Details Here :</h3>
+
+        <div class="container">
+<table class="table table-bordered border-secondary"  >
+  <thead class="table-success" >
+    <tr>
+      <th scope="col">ID</th>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Password</th>
+      <th scope="col">Date Created</th>
+      <th scope="col">date last login</th>
+    </tr>
+  </thead>
+  <tbody>
+  <?php
+$id= 1;
+foreach ($_SESSION['usersData'] as $value) {
+    echo "<tr>
+    <td>".$id."</td>
+    <td>".$value['firstname']."</td>
+    <td>".$value['email']."</td>
+    <td>".$value['password']."</td>
+    <td>".$value['date_create']."</td>
+    <td>".$value["Last-Login-Date"]."</td>
+</tr>";
+}  
+    ?>
+
+  
+   
+  </tbody>
 </table>
+</div>
+<?php echo '<br><br> <a href="index.php"><input style="margin-left:78%" class="btn btn-success btn-lg" type="button" name="logout" value="LOGOUT"></a>'; ?>
+
 </body>
 </html>

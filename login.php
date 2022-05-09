@@ -1,24 +1,74 @@
+<!-- 
+// session_start();
+// $_SESSION['lastLogin']=setCookie('lasttime', time(), time()+604800);
+// if(isset($_POST['btn'])){
+// $email = $_SESSION['email'];
+// $pass = $_SESSION['pass'];
+
+// if($email == $_POST['email'] && $pass == $_POST['pass']){
+//     header('location:welcome.php');
+// }else{
+//     echo 'incorrect password and email';
+// }
+//    if($email == 'test@gmail.com' && $pass == 'Aabc123'){
+//     header('location:admin.php');
+//    }
+
+// }
+
+//   -->
+
 <?php
 session_start();
-$_SESSION['lastLogin']=setCookie('lasttime', time(), time()+604800);
+
+
+
 if(isset($_POST['btn'])){
-$email = $_SESSION['email'];
-$pass = $_SESSION['pass'];
 
-if($email == $_POST['email'] && $pass == $_POST['pass']){
-    header('location:welcome.php');
-}else{
-    echo 'incorrect password and email';
+    $loginEmail=$_POST['email'];
+    $loginPass=$_POST['password'];
+    // $email=$_SESSION['email'];
+    // $pass=$_SESSION['password'];
+    
+    foreach ($_SESSION["usersData"] as $key => $value){
+if (($loginPass == $value['password']) && ($loginEmail == $value['email'])){
+
+    $_SESSION["userEmail"]= $value["email"];
+    $_SESSION["user_fname"]= $value['firstname'];
+    $_SESSION["user_mname"]= $value['middlename'];
+    $_SESSION["user_lname"]= $value['lastname'];
+    $_SESSION["user_faname"]= $value['familyname'];
+    $_SESSION["userMobile"]= $value['phonenumber'];
+    $_SESSION["usersData"][$key]["Last-Login-Date"]= date("d-m-Y - h:ia");
+    $_SESSION["usersData"];
+
+    header ("location: welcome.php");
+   
+    
 }
-   if($email == 'test@gmail.com' && $pass == 'Aabc123'){
-    header('location:admin.php');
-   }
+elseif($loginPass !== $value['password']) {
+    $PasswordErr="<span style=' color:red'>Incorrect Password</span><br>";
+
+
+
+}
+elseif($loginEmail !== $value['email']){
+    $EmailERR="<span style=' color:red'>Incorrect Email</span><br>";
+}
+};
+
+
+
+
+///////////////////////////////////// admin ////////////////////////
+if(($loginEmail == "marwa@gmail.com") && ($loginPass == "Admin*1234")){
+    header ("location: admin.php");
+}
 
 }
 
-   ?>
 
-
+?>
 
 
 <!DOCTYPE html>
@@ -27,8 +77,10 @@ if($email == $_POST['email'] && $pass == $_POST['pass']){
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="sign-up.css">
-    <title>Document</title>
+    
+    <title>Login</title>
+    <style><?php include "sign-up.css" ?></style>
+    
 </head>
 <body>
    <div class="login-box">
@@ -37,14 +89,14 @@ if($email == $_POST['email'] && $pass == $_POST['pass']){
        <form action="login.php" method="post">
         <label >Email</label>
 		<input type="email" name="email">
-        <!-- <p>Invalid email</p> -->
+        
         <br>
-        <?php if(isset($wrong1)){echo $wrong1;}?>
-		<label >PassWord</label>
-		<input type="password" name="pass" >
-        <!-- <p>wrong password</p>  -->
+        <?php if(isset( $EmailERR)){echo  $EmailERR;}?>
+		<label >Password</label>
+		<input type="password" name="password" >
+        
         <br>
-        <?php if(isset($wrong2)){echo $wrong2;}?>  
+        <?php if(isset( $PasswordErr)){echo  $PasswordErr;}?>
         <button class="btn" type="submit" name="btn" style="width: 57%;height: 5%;margin-top: 32px;background: #072227;color: white; border: none; margin-left: 22%; padding:10px;">Login</button>
        </form>
    </div> 
